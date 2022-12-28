@@ -1,0 +1,44 @@
+{
+  "name": "image_processing_api",
+  "version": "1.0.0",
+  "description": "An api that resizes images based on the query string passed through the url",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "build": "npx tsc",
+    "jasmine": "jasmine",
+    "test": "npm run build && npm run jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yahaiii/image_processing_api.git"
+  },
+  "keywords": [
+    "image",
+    "resizing",
+    "api",
+    "express"
+  ],
+  "author": "yahai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yahaiii/image_processing_api/issues"
+  },
+  "homepage": "https://github.com/yahaiii/image_processing_api#readme",
+  "devDependencies": {
+    "@types/jasmine": "^4.3.1",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.47.1",
+    "@typescript-eslint/parser": "^5.47.1",
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "jasmine": "^4.5.0",
+    "jasmine-spec-reporter": "^7.0.0"
+  }
+}
