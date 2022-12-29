@@ -1,6 +1,19 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var myFunc = function (num) {
-    return num * num;
+// const myFunc = (num: number): number => {
+//   return num * num;
+// };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.default = myFunc;
+Object.defineProperty(exports, "__esModule", { value: true });
+// export default myFunc;
+var express_1 = __importDefault(require("express"));
+var app = (0, express_1.default)();
+var port = 3000;
+app.get('/api', function (req, res) {
+    res.send('Hello, world!');
+});
+app.listen(port, function () {
+    console.log("server started at localhost".concat(port));
+});
+exports.default = app;
