@@ -39,32 +39,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var index_1 = __importDefault(require("../index"));
-var supertest_1 = __importDefault(require("supertest"));
-var request = (0, supertest_1.default)(index_1.default);
-// ENDPOINT CHECKER SUITE
-describe('Check all endpoints', function () {
-    describe(' GET /resize ', function () {
-        it('should respond with OK', function () { return __awaiter(void 0, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, request.get('/resize')];
-                    case 1:
-                        response = _a.sent();
-                        expect(response.statusCode).toBe(200);
-                        return [2 /*return*/];
-                }
-            });
-        }); });
+var express_1 = __importDefault(require("express"));
+var path_1 = __importDefault(require("path"));
+var fs_1 = __importDefault(require("fs"));
+var fs_2 = require("fs");
+var resize_1 = __importDefault(require("../utils/resize"));
+var routes = express_1.default.Router();
+routes.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var filename, width, height, pathToResized, image, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                filename = req.query.filename;
+                width = parseInt(req.query.width);
+                height = parseInt(req.query.height);
+                pathToResized = path_1.default.resolve(__dirname, "../../images/resized/".concat(filename, "-").concat(height, "x").concat(width, ".jpg"));
+                console.log(pathToResized);
+                console.log('before _resizeImage');
+                if (!!fs_1.default.existsSync(pathToResized)) return [3 /*break*/, 2];
+                return [4 /*yield*/, (0, resize_1.default)(filename, height, width)];
+            case 1:
+                image = _a.sent();
+                fs_2.promises.writeFile(pathToResized, image);
+                res.send(pathToResized);
+                console.log('with _resizeImage');
+                _a.label = 2;
+            case 2:
+                console.log('after _resizeImage');
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                res.send(error_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
     });
-});
-// RESIZING SERVICE TESTS
-// describe('Check all resizing', (): void => {
-//     describe(' Resize with valid parameter ', (): void => {
-//         it('should respond with OK', async (): Promise<void> => {
-//             const response: supertest.Response = await request.get('/api');
-//             expect(response.statusCode).toBe(200);
-//         });
-//     });
-// });
+}); });
+exports.default = routes;

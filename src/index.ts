@@ -1,20 +1,25 @@
-// const myFunc = (num: number): number => {
-//   return num * num;
-// };
-
-// export default myFunc;
-
 import express from 'express';
+import routes from './routes/_resizeImage';
+// import path from 'path';
+// import fs from 'fs';
 
 const app = express();
 const port = 3000;
 
-app.get('/api', (req, res) => {
-    res.send('Hello, world!');
+app.get('/', (req, res): void => {
+    res.send('Server is working');
 });
 
-app.listen(port, () => {
-    console.log(`server started at localhost${port}`);
+app.use('/resize', routes);
+
+app.listen(port, (): void => {
+    // const resized_path = path.resolve(__dirname, '../images/resized');
+    
+    // //TO-DO: Write tests to check for resized_path
+    // if(!fs.existsSync(resized_path)) {
+    //     fs.mkdirSync(resized_path);
+    // }
+    console.log(`server started at localhost:${port}`);
 });
 
 export default app;
