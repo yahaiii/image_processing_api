@@ -1,26 +1,34 @@
-// import resize from '../utils/resize';
-// import jasmine from 'jasmine';
+import app from "..";
+import supertest from 'supertest';
+import { promises as fsPromises } from 'fs';
+import path from "path";
 
+const request: supertest.SuperTest<supertest.Test> = supertest(app);
 
-// // RESIZE UTIL TEST
-// describe('Test the resize util', (): void => {
-//     it('should resize with valid params', async (): Promise<void> => {
-//         expect(resize('fjord.jpg', 450, 360)).toBe();
-//     });
-//     it('should resize with invalid params', async (): Promise<void> => {
-//         const response: supertest.Response = await request.get('/api');
-//         expect(response.statusCode).toBe(200);
-//     });
+//RESIZE UTIL CHECKER
+describe('resizeImage', (): void => {
+    it('should resize the image to the specified dimensions', async (): Promise<void> => {
+      const filename = 'fjord';
+      const width = 400;
+      const height = 220;
+  
+      const response: supertest.Response = await request.get(`/resize?filename=${filename}&width=${width}&height=${height}`);
+  
+      expect(response.status).toBe(200);
+    });
 
-// });
+    it('should return an error if the parameters are missing', async () => {
+        const response: supertest.Response = await request.get('/resize');
+        expect(response.status).toEqual(400);
+      });
 
-// // RESIZING SERVICE TESTS
-// describe('Check all resizing', (): void => {
-//     describe(' Resize with valid parameter ', (): void => {
-//         it('should respond with OK', async (): Promise<void> => {
-//             const response: supertest.Response = await request.get('/api');
-//             expect(response.statusCode).toBe(200);
-//         });
-//     });
-// });
-
+      // Delete the resized images after each test
+      afterEach(async () => {
+        const resizedImagesPath = path.resolve(__dirname, '../../images/resized');
+        const resizedImages = await fsPromises.readdir(resizedImagesPath);
+        resizedImages.forEach(async (image) => {
+          await fsPromises.unlink(path.resolve(resizedImagesPath, image));
+        });
+      });
+      
+});

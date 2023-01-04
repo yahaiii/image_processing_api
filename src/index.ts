@@ -1,5 +1,5 @@
 import express from 'express';
-import routes from './routes/_resizeImage';
+import routes from './routes/index';
 // import path from 'path';
 // import fs from 'fs';
 

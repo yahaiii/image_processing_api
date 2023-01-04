@@ -43,78 +43,59 @@ var fs_1 = __importDefault(require("fs"));
 var sharp_1 = __importDefault(require("sharp"));
 var path_1 = __importDefault(require("path"));
 var resizeImage = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var fsPromises, height, width, fileName, filePath, data, resizedImage, resizedFilePath, error_1;
+    var fsPromises, height, width, filename, file_path, resized_file_path, data, resized_image, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 4, , 5]);
+                _a.trys.push([0, 6, , 7]);
                 fsPromises = fs_1.default.promises;
                 height = req.query.height;
                 width = req.query.width;
-                fileName = req.query.filename;
-                filePath = path_1.default.resolve(__dirname, "../images/original/".concat(fileName, ".jpg"));
-                return [4 /*yield*/, fsPromises.readFile(filePath)];
-            case 1:
+                filename = req.query.filename;
+                file_path = path_1.default.resolve(__dirname, "../../images/original/".concat(filename, ".jpg"));
+                resized_file_path = path_1.default.resolve(__dirname, "../../images/resized/".concat(filename, "-").concat(width, "x").concat(height, ".jpg"));
+                // check all parameters
+                if (Object.keys(req.query).length === 0) {
+                    res.status(400).send('All parameters missing, the format is: /resize?filename=[string]&width=[number]&height=[number]');
+                }
+                if (!height) {
+                    res.status(400).send('invalid height parameter, check query');
+                }
+                if (!width) {
+                    res.status(400).send('invalid width parameter, check query');
+                }
+                if (!filename) {
+                    res.status(400).send('invalid filename parameter, check query');
+                }
+                if (!fs_1.default.existsSync(resized_file_path)) return [3 /*break*/, 1];
+                res.sendFile(resized_file_path);
+                console.log('...served image from cache');
+                return [3 /*break*/, 5];
+            case 1: return [4 /*yield*/, fsPromises.readFile(file_path)];
+            case 2:
                 data = _a.sent();
                 return [4 /*yield*/, (0, sharp_1.default)(data)
                         .resize(parseInt(width), parseInt(height))
                         .toFormat('jpeg')
                         .toBuffer()];
-            case 2:
-                resizedImage = _a.sent();
-                resizedFilePath = path_1.default.resolve(__dirname, "../images/resized/".concat(fileName, "-").concat(width, "x").concat(height, ".jpg"));
-                //create resized image at the resized directory
-                return [4 /*yield*/, fsPromises.writeFile(resizedFilePath, resizedImage)];
             case 3:
+                resized_image = _a.sent();
+                //create resized image at the resized directory
+                return [4 /*yield*/, fsPromises.writeFile(resized_file_path, resized_image)];
+            case 4:
                 //create resized image at the resized directory
                 _a.sent();
                 //send resized image to client
-                res.sendFile(resizedFilePath);
+                res.sendFile(resized_file_path);
                 console.log('Image resized and saved successfully!');
-                return [3 /*break*/, 5];
-            case 4:
+                _a.label = 5;
+            case 5: return [3 /*break*/, 7];
+            case 6:
                 error_1 = _a.sent();
                 console.error(error_1);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); };
 exports.default = resizeImage;
-// import sharp from 'sharp';
-// import path from 'path';
-// import { promises as fsPromises } from 'fs';
-// const filePath = path.resolve(__dirname,'../images/original/palmtunnel.jpg');
-// const _resizeImage = async fsPromise.readFile(filePath, (err, data): Promise<Buffer> => {
-//   if (err) throw err;
-//   await sharp(data)
-//     .resize(200, 200)
-//     .toFormat('jpeg')
-//     .toBuffer((err, buffer) => {
-//       if (err) throw err;
-//       fs.writeFile(path.resolve(__dirname, '../images/resized/resized-image.jpg'), buffer, (err) => {
-//         if (err) throw err;
-//         console.log('Image resized and saved successfully!');
-//       });
-//     });
-// });
-// export default _resizeImage;
-// import fs from 'fs';
-// import sharp from 'sharp';
-// import path from 'path';
-// const filePath = path.resolve(__dirname,'../images/original/santamonica.jpg');
-// const _resizeImage = async () => {
-//   try {
-//     const { promises: fsPromises } = fs;
-//     const data = await fsPromises.readFile(filePath);
-//     const resizedImage = await sharp(data)
-//       .resize(200, 200)
-//       .toFormat('jpeg')
-//       .toBuffer();
-//     await fsPromises.writeFile('/path/to/resized-image.jpg', resizedImage);
-//     console.log('Image resized and saved successfully!');
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-// export default _resizeImage;
