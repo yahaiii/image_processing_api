@@ -15,6 +15,8 @@ To install the server, packages and dependencies, clone the repository and run `
 ## Usage
 
 Run `npm run test` to build and run tests.
+Run `npm run jasmine` to run tests.
+Run `npm run build` to build.
 
 To start the API, run `npm run start`. The API will listen on port 3000 by default.
 
