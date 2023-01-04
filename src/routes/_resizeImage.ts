@@ -13,44 +13,56 @@ routes.get('/', async (req: express.Request, res: express.Response) => {
     //get params from the url
     const height = req.query.height as string;
     const width = req.query.width as string;
-    const filename = req.query.fileName as string;
-    const filePath = path.resolve(__dirname,`../../images/original/${filename}.jpg`);
+    const filename = req.query.filename as string;
+    const file_path = path.resolve(__dirname,`../../images/original/${filename}.jpg`);
+
+    //create path to resized image
+    const resized_file_path = path.resolve(__dirname, `../../images/resized/${filename}-${width}x${height}.jpg`);
+
+    // check all parameters
+    if (Object.keys(req.query).length === 0) {
+      res.status(400).send('All parameters missing, the format is: /resize?filename=[string]&width=[number]&height=[number]');
+    }
 
     if (!height) {
-      res.status(400).send('height missing, check query');
+      res.status(400).send('invalid height parameter, check query');
     }
 
     if (!width) {
-      res.status(400).send('width missing, check query');
+      res.status(400).send('invalid width parameter, check query');
     }
 
     if (!filename) {
-      res.status(400).send('filename missing, check query');
+      res.status(400).send('invalid filename parameter, check query');
     }
 
-    //read image data from the file system
+    //cache mechanism, check & serve resized image if already exists
+    if (fs.existsSync(resized_file_path)) {
+      res.sendFile(resized_file_path);
+      console.log('...served image from cache');
+    }
+    else {
+      //read image data from the file system
+          const data = await fsPromises.readFile(file_path);
 
-    const data = await fsPromises.readFile(filePath);
+      //resize image, push resized data to buffer
+      const resized_image = await sharp(data)
+        .resize(parseInt(width), parseInt(height))
+        .toFormat('jpeg')
+        .toBuffer();
 
-    //resize image, push data to buffer
-    const resizedImage = await sharp(data)
-      .resize(parseInt(width), parseInt(height))
-      .toFormat('jpeg')
-      .toBuffer();
+      //create resized image at the resized directory
+      await fsPromises.writeFile(resized_file_path, resized_image);
 
-    //create path to resized image
-    const resizedFilePath = path.resolve(__dirname, `../../images/resized/${filename}-${width}x${height}.jpg`);
+      //send resized image to client
+      res.sendFile(resized_file_path);
+      console.log('Image resized and saved successfully!');   
 
-    //create resized image at the resized directory
-    await fsPromises.writeFile(resizedFilePath, resizedImage);
-
-    //send resized image to client
-    res.sendFile(resizedFilePath);
-    console.log('Image resized and saved successfully!');
-
+    }
   } catch (error) {
     console.error(error);
   }
+    
 });
 
 export default routes;
