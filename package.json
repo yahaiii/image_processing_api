@@ -4,6 +4,7 @@
   "description": "An api that resizes images based on the query string passed through the url",
   "main": "index.js",
   "scripts": {
+    "format": "prettier --write '**/*.ts'",
     "lint": "eslint . --ext .ts",
     "build": "npx tsc",
     "jasmine": "jasmine",
