@@ -10,6 +10,10 @@ app.get("/", (req, res): void => {
   res.send("Server is working");
 });
 
+app.get("/health", (req, res) => {
+  res.sendStatus(200);
+});
+
 app.use("/resize", routes);
 
 app.listen(port, (): void => {

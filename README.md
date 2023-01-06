@@ -14,6 +14,7 @@ To install the server, packages and dependencies, clone the repository and run `
 
 ## Usage
 
+Run `npm run format` to format code with prettier.
 Run `npm run test` to build and run tests.
 Run `npm run jasmine` to run tests.
 Run `npm run build` to build.
@@ -35,6 +36,20 @@ The API will return the resized image in the response, and save a copy for futur
 
 To start the API, run the following command:
 `npm run start`
+
+##Health Check Endpoint
+To ensure that the app is working properly, a health check endpoint is available at the following URL:
+
+`/health`
+
+You can use this endpoint to check the status of the app by making a GET request to it. If the app is working properly, the endpoint will return a status code of 200. If there is an issue with the app, the endpoint will return a different status code.
+
+To use the health check endpoint, you can use a tool like curl to make a request to the endpoint:
+
+`curl -i http://localhost:3000/health`
+Alternatively, you can use a browser to make the request by visiting the URL in the address bar.
+
+You can use the health check endpoint as a simple way to ensure that the app is running and available to handle requests.
 
 ## Built With
 

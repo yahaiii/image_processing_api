@@ -45,13 +45,13 @@ var fs_1 = require("fs");
 var path_1 = __importDefault(require("path"));
 var request = (0, supertest_1.default)(__1.default);
 //RESIZE UTIL CHECKER
-describe('resizeImage', function () {
-    it('should resize the image to the specified dimensions', function () { return __awaiter(void 0, void 0, void 0, function () {
+describe("resizeImage", function () {
+    it("should resize the image to the specified dimensions", function () { return __awaiter(void 0, void 0, void 0, function () {
         var filename, width, height, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    filename = 'fjord';
+                    filename = "fjord";
                     width = 400;
                     height = 220;
                     return [4 /*yield*/, request.get("/resize?filename=".concat(filename, "&width=").concat(width, "&height=").concat(height))];
@@ -62,11 +62,11 @@ describe('resizeImage', function () {
             }
         });
     }); });
-    it('should return an error if the parameters are missing', function () { return __awaiter(void 0, void 0, void 0, function () {
+    it("should return an error if the parameters are missing", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/resize')];
+                case 0: return [4 /*yield*/, request.get("/resize")];
                 case 1:
                     response = _a.sent();
                     expect(response.status).toEqual(400);
@@ -80,7 +80,7 @@ describe('resizeImage', function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    resizedImagesPath = path_1.default.resolve(__dirname, '../../images/resized');
+                    resizedImagesPath = path_1.default.resolve(__dirname, "../../images/resized");
                     return [4 /*yield*/, fs_1.promises.readdir(resizedImagesPath)];
                 case 1:
                     resizedImages = _a.sent();

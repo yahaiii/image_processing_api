@@ -56,27 +56,29 @@ var resizeImage = function (req, res) { return __awaiter(void 0, void 0, void 0,
                 resized_file_path = path_1.default.resolve(__dirname, "../../images/resized/".concat(filename, "-").concat(width, "x").concat(height, ".jpg"));
                 // check all parameters
                 if (Object.keys(req.query).length === 0) {
-                    res.status(400).send('All parameters missing, the format is: /resize?filename=[string]&width=[number]&height=[number]');
+                    res
+                        .status(400)
+                        .send("All parameters missing, the format is: /resize?filename=[string]&width=[number]&height=[number]");
                 }
                 if (!height) {
-                    res.status(400).send('invalid height parameter, check query');
+                    res.status(400).send("invalid height parameter, check query");
                 }
                 if (!width) {
-                    res.status(400).send('invalid width parameter, check query');
+                    res.status(400).send("invalid width parameter, check query");
                 }
                 if (!filename) {
-                    res.status(400).send('invalid filename parameter, check query');
+                    res.status(400).send("invalid filename parameter, check query");
                 }
                 if (!fs_1.default.existsSync(resized_file_path)) return [3 /*break*/, 1];
                 res.sendFile(resized_file_path);
-                console.log('...served image from cache');
+                console.log("...served image from cache");
                 return [3 /*break*/, 5];
             case 1: return [4 /*yield*/, fsPromises.readFile(file_path)];
             case 2:
                 data = _a.sent();
                 return [4 /*yield*/, (0, sharp_1.default)(data)
                         .resize(parseInt(width), parseInt(height))
-                        .toFormat('jpeg')
+                        .toFormat("jpeg")
                         .toBuffer()];
             case 3:
                 resized_image = _a.sent();
@@ -87,7 +89,7 @@ var resizeImage = function (req, res) { return __awaiter(void 0, void 0, void 0,
                 _a.sent();
                 //send resized image to client
                 res.sendFile(resized_file_path);
-                console.log('Image resized and saved successfully!');
+                console.log("Image resized and saved successfully!");
                 _a.label = 5;
             case 5: return [3 /*break*/, 7];
             case 6:

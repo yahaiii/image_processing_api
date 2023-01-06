@@ -9,10 +9,13 @@ var index_1 = __importDefault(require("./routes/index"));
 // import fs from 'fs';
 var app = (0, express_1.default)();
 var port = 3000;
-app.get('/', function (req, res) {
-    res.send('Server is working');
+app.get("/", function (req, res) {
+    res.send("Server is working");
 });
-app.use('/resize', index_1.default);
+app.get("/health", function (req, res) {
+    res.sendStatus(200);
+});
+app.use("/resize", index_1.default);
 app.listen(port, function () {
     // const resized_path = path.resolve(__dirname, '../images/resized');
     // //TO-DO: Write tests to check for resized_path

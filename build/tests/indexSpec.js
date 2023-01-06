@@ -43,18 +43,18 @@ var index_1 = __importDefault(require("../index"));
 var supertest_1 = __importDefault(require("supertest"));
 var request = (0, supertest_1.default)(index_1.default);
 // CHECK SERVER UP
-describe('Express server', function () {
-    it('should be set up correctly', function () {
+describe("Express server", function () {
+    it("should be set up correctly", function () {
         expect(index_1.default).toBeDefined();
         expect(index_1.default.listen).toBeDefined();
     });
 });
-describe(' GET / ', function () {
-    it('should respond with OK', function () { return __awaiter(void 0, void 0, void 0, function () {
+describe(" GET / ", function () {
+    it("should respond with OK", function () { return __awaiter(void 0, void 0, void 0, function () {
         var response;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, request.get('/')];
+                case 0: return [4 /*yield*/, request.get("/")];
                 case 1:
                     response = _a.sent();
                     expect(response.statusCode).toBe(200);
