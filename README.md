@@ -37,7 +37,7 @@ The API will return the resized image in the response, and save a copy for futur
 To start the API, run the following command:
 `npm run start`
 
-##Health Check Endpoint
+## Health Check Endpoint
 To ensure that the app is working properly, a health check endpoint is available at the following URL:
 
 `/health`
