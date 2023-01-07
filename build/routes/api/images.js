@@ -39,39 +39,59 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var resizeImage_1 = require("../utils/resizeImage");
 var fs_1 = __importDefault(require("fs"));
-//RESIZE UTIL CHECKER
-describe("resizeImage", function () {
-    it("should resize the image to the specified dimensions", function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, expectAsync((0, resizeImage_1.resizeImage)("input", "300", "550")).toBeResolved()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    it("should return an error if the parameters are missing", function () { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, expectAsync((0, resizeImage_1.resizeImage)("nonexistent", "500", "350")).toBeRejected()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    // Delete the resized image after the test
-    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
-        var img_path;
-        return __generator(this, function (_a) {
-            img_path = (0, resizeImage_1.resized_file_path)("input", "500", "350");
-            if (fs_1.default.existsSync(img_path)) {
-                fs_1.default.unlinkSync(img_path);
-            }
-            return [2 /*return*/];
-        });
-    }); });
-});
+var express_1 = __importDefault(require("express"));
+var resizeImage_1 = require("../../utils/resizeImage");
+var images = express_1.default.Router();
+images.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var fsPromises, height, width, filename, resized_path, resized_image, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 5, , 6]);
+                fsPromises = fs_1.default.promises;
+                height = req.query.height;
+                width = req.query.width;
+                filename = req.query.filename;
+                resized_path = (0, resizeImage_1.resized_file_path)(filename, width, height);
+                // check if parameters are supplied in url
+                if (Object.keys(req.query).length === 0) {
+                    res
+                        .status(400)
+                        .send("All parameters missing, the format is: /images?filename=[string]&width=[number]&height=[number]");
+                }
+                if (!height) {
+                    res.status(400).send("invalid height parameter, check query");
+                }
+                if (!width) {
+                    res.status(400).send("invalid width parameter, check query");
+                }
+                if (!filename) {
+                    res.status(400).send("invalid filename parameter, check query");
+                }
+                if (!fs_1.default.existsSync(resized_path)) return [3 /*break*/, 1];
+                res.sendFile(resized_path);
+                console.log("...served image from cache");
+                return [3 /*break*/, 4];
+            case 1: return [4 /*yield*/, (0, resizeImage_1.resizeImage)(filename, width, height)];
+            case 2:
+                resized_image = _a.sent();
+                //create resized image file at the resized path
+                return [4 /*yield*/, fsPromises.writeFile(resized_path, resized_image)];
+            case 3:
+                //create resized image file at the resized path
+                _a.sent();
+                //send resized image to client
+                res.sendFile(resized_path);
+                console.log("Image resized and saved successfully!");
+                _a.label = 4;
+            case 4: return [3 /*break*/, 6];
+            case 5:
+                error_1 = _a.sent();
+                console.error(error_1);
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
+        }
+    });
+}); });
+exports.default = images;
