@@ -40,7 +40,7 @@ To start the API, run the following command:
 ## Health Check Endpoint
 To ensure that the app is working properly, a health check endpoint is available at the following URL:
 
-`/health`
+`http://localhost:3000/health`
 
 You can use this endpoint to check the status of the app by making a GET request to it. If the app is working properly, the endpoint will return a status code of 200. If there is an issue with the app, the endpoint will return a different status code.
 
