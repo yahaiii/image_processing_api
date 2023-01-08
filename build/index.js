@@ -18,7 +18,6 @@ app.get("/health", function (req, res) {
 app.use("/api", index_1.default);
 app.listen(port, function () {
     var resized_path = path_1.default.resolve(__dirname, "../images/resized");
-    //TO-DO: Write tests to check for resized_path
     if (!fs_1.default.existsSync(resized_path)) {
         fs_1.default.mkdirSync(resized_path);
     }
