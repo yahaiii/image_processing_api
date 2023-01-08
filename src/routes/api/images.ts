@@ -26,18 +26,26 @@ images.get(
           .send(
             "All parameters missing, the format is: /images?filename=[string]&width=[number]&height=[number]"
           );
+          console.log("All parameters missing. Enter valid parameters and try again.");
+          return
       }
 
       if (!height) {
-        res.status(400).send("invalid height parameter, check query");
+        res.status(400).send("invalid height parameter, rectify it and try again.");
+        console.log("invalid height parameter, rectify it and try again.");
+        return
       }
 
       if (!width) {
-        res.status(400).send("invalid width parameter, check query");
+        res.status(400).send("invalid width parameter, rectify it and try again.");
+        console.log("invalid width parameter, rectify it and try again.");
+        return
       }
 
       if (!filename) {
-        res.status(400).send("invalid filename parameter, check query");
+        res.status(400).send("invalid filename parameter, rectify it and try again.");
+        console.log("invalid filename parameter, rectify it and try again.");
+        return
       }
 
       //cache mechanism, check & serve resized image if already exists
@@ -56,7 +64,8 @@ images.get(
         console.log("Image resized and saved successfully!");
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      res.status(500).send('An error occurred. Rectify parameters and try again.');
     }
   }
 );

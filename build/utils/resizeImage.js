@@ -6,8 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.resized_file_path = exports.resizeImage = void 0;
 var sharp_1 = __importDefault(require("sharp"));
 var path_1 = __importDefault(require("path"));
+var fs_1 = __importDefault(require("fs"));
 var resizeImage = function (filename, width, height) {
     var filepath = path_1.default.resolve(__dirname, "../../images/original/".concat(filename, ".jpg"));
+    if (!fs_1.default.existsSync(filepath)) {
+        console.log("Wrong filename. Check filename and try again.");
+    }
     return (0, sharp_1.default)(filepath)
         .resize(parseInt(width), parseInt(height))
         .toFormat("jpeg")
