@@ -27,7 +27,7 @@ To resize an image, send a GET request to the `/resize` endpoint with the follow
 - `width`: the width of the resized image
 - `height`: the height of the resized image
 
-For example: `/images?filename=image&width=420&height=270`
+For example: `http://localhost:3000/api/images?filename=input&width=500&height=350`
 
 WITHOUT file extension. JPG is assumed.
 
